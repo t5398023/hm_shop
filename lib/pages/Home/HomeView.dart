@@ -16,16 +16,21 @@ class HomeView extends StatefulWidget {
 
 class _HomeViewState extends State<HomeView> {
 List<BannerItem> _banners = [];
+List<CategoryItem> _categorys = [];
 @override
 void initState() { 
   super.initState();
   _loadBanners();
+  _loadCategory();
 }
  _loadBanners() async {
   _banners = await homeApi.getBanners();
+  // if (mounted) setState(() {});
+}
+_loadCategory() async {
+  _categorys = await homeApi.getCategory();
   if (mounted) setState(() {});
 }
-
   List<Widget> _getSlivers(){
     return [
       SliverToBoxAdapter(
@@ -35,7 +40,7 @@ void initState() {
         child: SizedBox(height: 10.0,),
       ),
       SliverToBoxAdapter(
-        child: HmCategory(),
+        child: HmCategory(categorys: _categorys,),
       ),
       SliverToBoxAdapter(
         child: SizedBox(height: 10.0,),

@@ -9,5 +9,11 @@ class HomeApi{
     final data = await dioRequest.get(NetConstants.BANNER_LIST);
     return (data as List).map((e) => BannerItem.fromJson(e)).toList();
   }
+  Future<List<CategoryItem>> getCategory() async{
+    final data = await dioRequest.get(NetConstants.CATEGORY_LIST);
+   
+    return (data as List).map((e) => CategoryItem.fromJson(e)).toList();
+  }
+
 }
 final homeApi = HomeApi();
