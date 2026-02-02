@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:hm_shop/api/home.dart';
 import 'package:hm_shop/components/Home/HmCategory.dart';
 import 'package:hm_shop/components/Home/HmHot.dart';
 import 'package:hm_shop/components/Home/HmMoreList.dart';
@@ -14,11 +15,17 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
- final List<BannerItem> _banners = [
-    BannerItem(id: "1", imgUrl: "https://kkimgs.yisou.com/ims?kt=url&at=ori&key=aHR0cDovL2Rlc2stZmQuem9sLWltZy5jb20uY24vdF9zOTYweDYwMGM1L2c1L00wMC8wMS8wRi9DaE1rSjFiS3d3MklGQ1c0QUFYbHZpX29RTW9BQUxHeEFMaW5KZ0FCZVhXOTYxLmpwZw==&sign=yx:cjgeIvVCExcONVnSFeGCjNfW7Do=&tv=0_0"),
-    BannerItem(id: "2", imgUrl: "https://kkimgs.yisou.com/ims?kt=url&at=ori&key=aHR0cDovL3R2YTEuc2luYWltZy5jbi9sYXJnZS8wMDVOV01ha2d5MWdsanhtZndyeGxqMzFoYzB1MGF5ei5qcGc=&sign=yx:RjJIDQb_duvJDUL2YpnhiYZ8zCU=&tv=0_0"),
-    BannerItem(id: "3", imgUrl: "https://kkimgs.yisou.com/ims?kt=url&at=ori&key=aHR0cDovL2ltZzE3LjNsaWFuLmNvbS9kL2ZpbGUvMjAxNzAyLzE4L2U3NjgwYmUwMmJjNjhhZGRjYmFmZjhhNzliOTA1ZjE4LmpwZw==&sign=yx:aYgRiONiQT8J10OPlD_hsm8ZBr8=&tv=0_0"),
-  ];
+List<BannerItem> _banners = [];
+@override
+void initState() { 
+  super.initState();
+  _loadBanners();
+}
+ _loadBanners() async {
+  _banners = await homeApi.getBanners();
+  if (mounted) setState(() {});
+}
+
   List<Widget> _getSlivers(){
     return [
       SliverToBoxAdapter(
@@ -63,4 +70,6 @@ class _HomeViewState extends State<HomeView> {
 
     );
   }
+  
+  // static homaApi() {}
 }
