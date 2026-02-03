@@ -4,7 +4,7 @@ import 'package:hm_shop/viewmodels/Home/BannerItem.dart';
 
 class HmSlider extends StatefulWidget {
   final List<BannerItem> banners;
-  HmSlider({Key? key,required this.banners}) : super(key: key);
+  const HmSlider({super.key,required this.banners});
 
   @override
   _HmSliderState createState() => _HmSliderState();
@@ -63,7 +63,7 @@ class _HmSliderState extends State<HmSlider> {
           width: _currentIndex == index ? 20.0 : 10.0,
           height: 10.0,
           decoration: BoxDecoration(
-            color: Colors.white.withOpacity(_currentIndex == index ? 1.0 : 0.5),
+            color: Colors.white.withValues(alpha: _currentIndex == index ? 1.0 : 0.5),
             borderRadius: BorderRadius.circular(5.0),
           ),
         )),

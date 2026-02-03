@@ -14,6 +14,25 @@ class HomeApi{
    
     return (data as List).map((e) => CategoryItem.fromJson(e)).toList();
   }
+   Future<List<GoodDetailItem>> getRecommendList(Map<String,dynamic> params) async{
+    final data = await dioRequest.get(NetConstants.RECOMMEND_LIST,queryParameters: params);
+    print(data);
+    return (data as List).map((e) => GoodDetailItem.fromJson(e)).toList();
+  }
+  Future<SuggestionResult> getSuggestions() async{
+    final data = await dioRequest.get(NetConstants.PRODUCT_LIST);
+    return SuggestionResult.fromJson(data);
+  }
 
+  Future<SuggestionResult> getInVogueList() async{
+    final data = await dioRequest.get(NetConstants.IN_VOGUE_LIST);
+    return SuggestionResult.fromJson(data);
+  }
+
+  Future<SuggestionResult> getOneStopList() async{
+    final data = await dioRequest.get(NetConstants.ONE_STOP_LIST);
+    return SuggestionResult.fromJson(data);
+  }
+ 
 }
 final homeApi = HomeApi();

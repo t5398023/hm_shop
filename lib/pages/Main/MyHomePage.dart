@@ -4,7 +4,7 @@ import 'package:hm_shop/pages/Category/CategoryView.dart';
 import 'package:hm_shop/pages/Home/HomeView.dart';
 import 'package:hm_shop/pages/Mine/MineView.dart';
 class MyHomePage extends StatefulWidget {
-  MyHomePage({Key? key}) : super(key: key);
+  const MyHomePage({super.key});
 
   @override
   _MyHomePageState createState() => _MyHomePageState();

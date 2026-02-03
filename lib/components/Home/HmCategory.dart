@@ -3,7 +3,7 @@ import 'package:hm_shop/viewmodels/Home/BannerItem.dart';
 
 class HmCategory extends StatefulWidget {
   final List<CategoryItem> categorys;
-  HmCategory({Key? key,required this.categorys}) : super(key: key);
+  const HmCategory({super.key,required this.categorys});
 
   @override
   _HmCategoryState createState() => _HmCategoryState();
@@ -12,7 +12,7 @@ class HmCategory extends StatefulWidget {
 class _HmCategoryState extends State<HmCategory> {
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 100,
        child: ListView.builder(
         scrollDirection: Axis.horizontal,
