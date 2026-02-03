@@ -15,6 +15,9 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+  int limit =10;
+  bool isLoading = false;
+  bool hasMore = true;
   List<BannerItem> _banners = [];
   List<CategoryItem> _categorys = [];
   List<GoodDetailItem> _recommendList = [];
@@ -42,12 +45,47 @@ class _HomeViewState extends State<HomeView> {
     _loadInVogueList();
     _loadOneStopList();
     _loadRecommendList();
+    _registEvent();
   }
-
-  Future<void> _loadRecommendList() async {
-    _recommendList = await homeApi.getRecommendList({
-     "limit": 10,
+  // 滚动控制器
+  void _registEvent() {
+    _scrollController.addListener(() {
+      //上拉加载更多数据
+      if (_scrollController.position.pixels ==
+          _scrollController.position.maxScrollExtent) {
+        print("滚动到了最底部");
+       
+        limit += 10;
+         _loadRecommendList();
+        
+       
+      }
+      //下拉刷新数据
+      if (_scrollController.position.pixels ==
+          _scrollController.position.minScrollExtent) {
+        print("滚动到了顶部");
+        limit = 10;
+        hasMore = true;
+        _loadRecommendList();
+      }
     });
+  }
+  
+  Future<void> _loadRecommendList() async {
+    if (isLoading||!hasMore) {
+      return;
+    }
+    isLoading = true;
+     
+    _recommendList = await homeApi.getRecommendList({
+     "limit": limit,
+    });
+   
+    isLoading = false;
+     print(_recommendList.length);
+    if (_recommendList.length < limit) {
+      hasMore = false;
+    }
     // print(_recommendList);
     if (mounted) setState(() {});
   }
@@ -105,10 +143,13 @@ class _HomeViewState extends State<HomeView> {
       HmMoreList(recommendList: _recommendList),
     ];
   }
-
+  final ScrollController _scrollController = ScrollController();
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(slivers: _getSlivers());
+    return CustomScrollView(
+      controller: _scrollController,
+      slivers: _getSlivers(),
+    );
   }
 
   // static homaApi() {}

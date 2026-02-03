@@ -16,7 +16,7 @@ class HomeApi{
   }
    Future<List<GoodDetailItem>> getRecommendList(Map<String,dynamic> params) async{
     final data = await dioRequest.get(NetConstants.RECOMMEND_LIST,queryParameters: params);
-    print(data);
+    // print(data);
     return (data as List).map((e) => GoodDetailItem.fromJson(e)).toList();
   }
   Future<SuggestionResult> getSuggestions() async{
