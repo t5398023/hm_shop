@@ -5,6 +5,7 @@ import 'package:hm_shop/components/Home/HmHot.dart';
 import 'package:hm_shop/components/Home/HmMoreList.dart';
 import 'package:hm_shop/components/Home/HmSlider.dart';
 import 'package:hm_shop/components/Home/HmSuggestion.dart';
+import 'package:hm_shop/utils/Toast/ToastUtil.dart';
 import 'package:hm_shop/viewmodels/Home/BannerItem.dart';
 
 class HomeView extends StatefulWidget {
@@ -15,7 +16,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
-  int limit =10;
+  int limit = 10;
   bool isLoading = false;
   bool hasMore = true;
   List<BannerItem> _banners = [];
@@ -39,81 +40,105 @@ class _HomeViewState extends State<HomeView> {
   @override
   void initState() {
     super.initState();
-    _loadBanners();
-    _loadCategory();
-    _loadSuggestion();
-    _loadInVogueList();
-    _loadOneStopList();
-    _loadRecommendList();
+    // _loadBanners();
+    // _loadCategory();
+    // _loadSuggestion();
+    // _loadInVogueList();
+    // _loadOneStopList();
+    // _loadRecommendList();
     _registEvent();
+    Future.microtask((){
+      _refreshKey.currentState!.show();
+      // _scrollController.position.pixels = 20;
+      //动画包裹
+     
+      // _scrollController.jumpTo(-80);
+        _scrollController.animateTo(-80,
+          duration: const Duration(milliseconds: 1000), curve: Curves.linearToEaseOut);
+    });
+  
   }
+
   // 滚动控制器
   void _registEvent() {
     _scrollController.addListener(() {
       //上拉加载更多数据
       if (_scrollController.position.pixels ==
           _scrollController.position.maxScrollExtent) {
-        print("滚动到了最底部");
        
         limit += 10;
-         _loadRecommendList();
-        
-       
+        _loadRecommendList();
+        ToastUtil.show(context, "加载更多...");
       }
       //下拉刷新数据
-      if (_scrollController.position.pixels ==
-          _scrollController.position.minScrollExtent) {
-        print("滚动到了顶部");
-        limit = 10;
-        hasMore = true;
-        _loadRecommendList();
-      }
+      // if (_scrollController.position.pixels ==
+      //     _scrollController.position.minScrollExtent) {
+      //   print("滚动到了顶部");
+      //   limit = 10;
+      //   hasMore = true;
+      //   _loadRecommendList();
+      // }
     });
   }
-  
+
   Future<void> _loadRecommendList() async {
-    if (isLoading||!hasMore) {
+    if (isLoading || !hasMore) {
       return;
     }
     isLoading = true;
-     
-    _recommendList = await homeApi.getRecommendList({
-     "limit": limit,
-    });
-   
+
+    _recommendList = await homeApi.getRecommendList({"limit": limit});
+
     isLoading = false;
-     print(_recommendList.length);
+    print(_recommendList.length);
     if (_recommendList.length < limit) {
       hasMore = false;
     }
-    // print(_recommendList);
-    if (mounted) setState(() {});
+    setState(() {
+      
+    });
+  
   }
 
   Future<void> _loadBanners() async {
     _banners = await homeApi.getBanners();
-    if (mounted) setState(() {});
+    
   }
 
   Future<void> _loadCategory() async {
     _categorys = await homeApi.getCategory();
-    if (mounted) setState(() {});
+    
   }
 
   Future<void> _loadSuggestion() async {
     _suggestionResult = await homeApi.getSuggestions();
     // print(_suggestionResult);
-    if (mounted) setState(() {});
+   
   }
 
   Future<void> _loadInVogueList() async {
     _inVogueResult = await homeApi.getInVogueList();
-    if (mounted) setState(() {});
+   
   }
 
   Future<void> _loadOneStopList() async {
     _oneStopResult = await homeApi.getOneStopList();
-    if (mounted) setState(() {});
+    
+  }
+  Future<void> _onRefresh() async{
+    limit = 10;
+    hasMore = true;
+    isLoading = false;
+    await _loadBanners();
+    await _loadCategory();
+    await _loadSuggestion();
+    await _loadInVogueList();
+    await _loadOneStopList();
+    await _loadRecommendList();
+    ToastUtil.show(context, "刷新成功");
+     setState(() {
+       
+     });
   }
 
   List<Widget> _getSlivers() {
@@ -132,9 +157,13 @@ class _HomeViewState extends State<HomeView> {
           child: Flex(
             direction: Axis.horizontal,
             children: [
-              Expanded(child: HmHot(result: _inVogueResult, type: "inVogue")),
+              Expanded(
+                child: HmHot(result: _inVogueResult, type: "inVogue"),
+              ),
               SizedBox(width: 10.0),
-              Expanded(child: HmHot(result: _oneStopResult, type: "oneStop")),
+              Expanded(
+                child: HmHot(result: _oneStopResult, type: "oneStop"),
+              ),
             ],
           ),
         ),
@@ -143,12 +172,19 @@ class _HomeViewState extends State<HomeView> {
       HmMoreList(recommendList: _recommendList),
     ];
   }
+
   final ScrollController _scrollController = ScrollController();
+  //GlobalKey<ScaffoldState> _scaffoldKey = GlobalKey<ScaffoldState>();
+  final GlobalKey<RefreshIndicatorState> _refreshKey = GlobalKey<RefreshIndicatorState>();
   @override
   Widget build(BuildContext context) {
-    return CustomScrollView(
-      controller: _scrollController,
-      slivers: _getSlivers(),
+    return RefreshIndicator(
+      key: _refreshKey,
+      onRefresh: _onRefresh,
+      child: CustomScrollView(
+        controller: _scrollController,
+        slivers: _getSlivers(),
+      ),
     );
   }
 
