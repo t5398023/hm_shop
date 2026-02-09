@@ -55,14 +55,20 @@ class _MineViewState extends State<MineView> {
             //AssetImage("lib/assets/Home/limit_time.png")
           ),
           SizedBox(width: 10.0),
-          Text(
-            "用户",
+          GestureDetector(
+            onTap: () {
+              Navigator.pushNamed(context, "/login");
+
+            },
+            child: Text(
+            "立即登录",
             style: TextStyle(
               color: const Color.fromARGB(255, 35, 35, 35),
               fontSize: 16.0,
               fontWeight: FontWeight.bold,
             ),
           ),
+          )
         ],
       ),
     );

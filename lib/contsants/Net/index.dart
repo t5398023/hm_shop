@@ -13,5 +13,6 @@ class NetConstants {
   static const String ONE_STOP_LIST = "/hot/oneStop";//商品详情
   static const String RECOMMEND_LIST = "/home/recommend";//推荐商品
   static const String GUESS_LIST = "/home/goods/guessLike";//搜索建议
+  static const String LOGIN_URL = "/login";//登录
 
 }

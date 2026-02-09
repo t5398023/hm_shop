@@ -1,3 +1,5 @@
+import 'dart:math';
+
 import 'package:dio/dio.dart';
 import 'package:hm_shop/contsants/Net/index.dart';
 
@@ -27,7 +29,8 @@ class DioRequest {
           handler.reject(DioException(requestOptions: response.requestOptions));
         },
         onError: (err, handler) {
-          handler.reject(err);
+          // handler.reject(err);
+          handler.reject(DioException(requestOptions: err.requestOptions,message: err.response?.data['msg'] ?? "未知错误"));
         },
       ),
     );
@@ -36,6 +39,11 @@ class DioRequest {
   Future<dynamic> get(String url, {Map<String, dynamic>? queryParameters}) {
     return _handleResponse(_dio.get(url, queryParameters: queryParameters));
   }
+  Future<dynamic> post(String url, {Map<String, dynamic>? data}) {
+    return _handleResponse(_dio.post(url, data: data));
+  }
+
+
 
   //进一步处理返回结果函数
  Future<dynamic> _handleResponse(Future<Response<dynamic>> task) async {
@@ -45,9 +53,10 @@ class DioRequest {
       if (data['code'] == GlobalConstants.SUCCESS_CODE) {
         return data['result'];
       }
-      throw Exception(data['msg'] ?? "未知错误");
+      throw DioException(requestOptions: response.requestOptions,message: data['msg'] ?? "未知错误");
     } catch (e) {
-      throw Exception(e);
+      // throw Exception(e);
+      rethrow;
     }
   }
 }
