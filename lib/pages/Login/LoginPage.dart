@@ -1,4 +1,3 @@
-import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
@@ -103,13 +102,13 @@ class _LoginPageState extends State<LoginPage> {
         "account": _usernameController.text,
         "password": _passwordController.text,
       }); 
-      print(rea);
+   
       _userController.updateUser(rea);
       ToastUtil.show(context, "登录成功", 2);
       //登录成功后，跳转到首页
       Navigator.pop(context);
     } catch (e) {
-      print(e);
+     
       ToastUtil.show(context, (e as DioException).message ?? "登录失败", 2);
     }
   
