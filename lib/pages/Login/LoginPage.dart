@@ -2,7 +2,9 @@ import 'dart:ffi';
 
 import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
 import 'package:hm_shop/api/login.dart';
+import 'package:hm_shop/stores/UserController.dart';
 import 'package:hm_shop/utils/Toast/ToastUtil.dart';
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -15,6 +17,8 @@ class _LoginPageState extends State<LoginPage> {
   bool _isChecked = false;
   TextEditingController _usernameController = TextEditingController();
   TextEditingController _passwordController = TextEditingController();
+  final UserController _userController = Get.find();
+  // final UserController _userController = Get.put(UserController());
   Widget _buildUserProtocos(){
     return Row(
       mainAxisAlignment: MainAxisAlignment.start,
@@ -100,6 +104,7 @@ class _LoginPageState extends State<LoginPage> {
         "password": _passwordController.text,
       }); 
       print(rea);
+      _userController.updateUser(rea);
       ToastUtil.show(context, "登录成功", 2);
       //登录成功后，跳转到首页
       Navigator.pop(context);

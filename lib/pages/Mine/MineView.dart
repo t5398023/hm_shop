@@ -1,7 +1,10 @@
 import 'package:flutter/material.dart';
+import 'package:get/instance_manager.dart';
+import 'package:get/state_manager.dart';
 import 'package:hm_shop/api/home.dart';
 import 'package:hm_shop/components/Home/HmMoreList.dart';
 import 'package:hm_shop/components/Mine/HmGuess.dart';
+import 'package:hm_shop/stores/UserController.dart';
 import 'package:hm_shop/viewmodels/Home/BannerItem.dart';
 
 class MineView extends StatefulWidget {
@@ -12,6 +15,8 @@ class MineView extends StatefulWidget {
 }
 
 class _MineViewState extends State<MineView> {
+  final UserController _userController = Get.put(UserController());
+  // final UserController _userController = Get.find();
   List<GoodDetailItem> _recommendList = [];
    @override
    void initState() { 
@@ -39,36 +44,35 @@ class _MineViewState extends State<MineView> {
   }
   Widget _buildHeader() {
     return Container(
+      padding: EdgeInsets.only(left: 10.0),
       height: 100.0,
       color: const Color.fromARGB(255, 245, 232, 232),
       child: Row(
         children: [
-          Container(
-            margin: EdgeInsets.only(left: 10.0),
-            width: 50.0,
-            height: 50.0,
-            decoration: BoxDecoration(
-              color: Colors.white,
-              borderRadius: BorderRadius.circular(40.0),
-            ),
-            child: Image(image: AssetImage("lib/assets/Login/unloginIcon.png")),
-            //AssetImage("lib/assets/Home/limit_time.png")
-          ),
+          Obx(() {
+            return CircleAvatar(
+              // margin: EdgeInsets.only(left: 10.0),
+              radius: 25.0,
+              backgroundImage: _userController.user.value.id.isNotEmpty?NetworkImage(_userController.user.value.avater):AssetImage("lib/assets/Login/unloginIcon.png"),
+            );
+           
+          }),
           SizedBox(width: 10.0),
-          GestureDetector(
-            onTap: () {
-              Navigator.pushNamed(context, "/login");
-
-            },
-            child: Text(
-            "立即登录",
-            style: TextStyle(
-              color: const Color.fromARGB(255, 35, 35, 35),
-              fontSize: 16.0,
-              fontWeight: FontWeight.bold,
-            ),
-          ),
-          )
+          Obx(() {
+            return GestureDetector(
+              onTap: () {
+                Navigator.pushNamed(context, "/login");
+              },
+              child: Text(
+               _userController.user.value.id.isNotEmpty?_userController.user.value.account:"立即登录",
+                style: TextStyle(
+                  color: const Color.fromARGB(255, 35, 35, 35),
+                  fontSize: 16.0,
+                  fontWeight: FontWeight.bold,
+                ),
+              ),
+            );
+          })
         ],
       ),
     );
