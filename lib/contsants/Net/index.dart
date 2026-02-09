@@ -12,5 +12,6 @@ class NetConstants {
   static const String IN_VOGUE_LIST = "/hot/inVogue";//热榜推荐
   static const String ONE_STOP_LIST = "/hot/oneStop";//商品详情
   static const String RECOMMEND_LIST = "/home/recommend";//推荐商品
+  static const String GUESS_LIST = "/home/goods/guessLike";//搜索建议
 
 }

@@ -16,6 +16,7 @@ class HomeView extends StatefulWidget {
 }
 
 class _HomeViewState extends State<HomeView> {
+
   int limit = 10;
   bool isLoading = false;
   bool hasMore = true;
@@ -68,7 +69,7 @@ class _HomeViewState extends State<HomeView> {
        
         limit += 10;
         _loadRecommendList();
-        ToastUtil.show(context, "加载更多...");
+        ToastUtil.show(context, "加载更多...",300);
       }
       //下拉刷新数据
       // if (_scrollController.position.pixels ==
@@ -135,7 +136,7 @@ class _HomeViewState extends State<HomeView> {
     await _loadInVogueList();
     await _loadOneStopList();
     await _loadRecommendList();
-    ToastUtil.show(context, "刷新成功");
+    ToastUtil.show(context, "刷新成功",1000);
      setState(() {
        
      });
