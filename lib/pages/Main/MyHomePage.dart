@@ -1,8 +1,12 @@
 import 'package:flutter/material.dart';
+import 'package:get/get.dart';
+import 'package:hm_shop/api/login.dart';
 import 'package:hm_shop/pages/Cart/CartView.dart';
 import 'package:hm_shop/pages/Category/CategoryView.dart';
 import 'package:hm_shop/pages/Home/HomeView.dart';
 import 'package:hm_shop/pages/Mine/MineView.dart';
+import 'package:hm_shop/stores/TokenManager.dart';
+import 'package:hm_shop/stores/UserController.dart';
 class MyHomePage extends StatefulWidget {
   const MyHomePage({super.key});
 
@@ -50,6 +54,19 @@ class _MyHomePageState extends State<MyHomePage> {
       CartView(),
       MineView(),
     ];
+  }
+  @override
+  void initState(){
+    super.initState();
+    //初始化用户
+    _initUser();
+  }
+  final userController = Get.put(UserController());
+  void _initUser() async{
+    await tokenManager.init();
+    if (tokenManager.getToken().isNotEmpty) {
+      userController.updateUser(await loginApi.getUserInfo());
+    }
   }
   @override
   Widget build(BuildContext context) {

@@ -3,6 +3,7 @@ import 'package:dio/dio.dart';
 import 'package:flutter/material.dart';
 import 'package:get/get.dart';
 import 'package:hm_shop/api/login.dart';
+import 'package:hm_shop/stores/TokenManager.dart';
 import 'package:hm_shop/stores/UserController.dart';
 import 'package:hm_shop/utils/Toast/ToastUtil.dart';
 class LoginPage extends StatefulWidget {
@@ -104,6 +105,9 @@ class _LoginPageState extends State<LoginPage> {
       }); 
    
       _userController.updateUser(rea);
+      // print(rea.avater);
+      tokenManager.setToken(rea.token);
+    
       ToastUtil.show(context, "登录成功", 2);
       //登录成功后，跳转到首页
       Navigator.pop(context);

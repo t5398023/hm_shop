@@ -3,6 +3,7 @@ class GlobalConstants {
  static const  BASE_URL = "https://meikou-api.itheima.net";
   static const int TIME_OUT = 10;
   static const String SUCCESS_CODE = "1";
+  static const String TOKEN_KEY = "hm_shop_token";
 
 }
 class NetConstants {
@@ -14,5 +15,6 @@ class NetConstants {
   static const String RECOMMEND_LIST = "/home/recommend";//推荐商品
   static const String GUESS_LIST = "/home/goods/guessLike";//搜索建议
   static const String LOGIN_URL = "/login";//登录
+  static const String USER_PROFILE = "/member/profile";//注册
 
 }

@@ -15,7 +15,7 @@ class MineView extends StatefulWidget {
 }
 
 class _MineViewState extends State<MineView> {
-  final UserController _userController = Get.put(UserController());
+  final UserController _userController = Get.find();
   // final UserController _userController = Get.find();
   List<GoodDetailItem> _recommendList = [];
    @override

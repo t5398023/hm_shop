@@ -10,5 +10,10 @@ class LoginApi{
     // return data;
     return UserInfo.fromJson(data);
   }
+  Future<UserInfo> getUserInfo() async{//Future<SuggestionResult> 
+    final data = await dioRequest.get(NetConstants.USER_PROFILE);
+    print(data);
+    return UserInfo.fromJson(data);
+  }
 }
 final loginApi = LoginApi();
